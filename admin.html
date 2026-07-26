@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Admin</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 2rem; background: #f5f7fa; color: #1f3a5f; }
+    .card { background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); margin-bottom: 1.2rem; }
+    label { display: block; margin-top: 0.8rem; font-weight: 600; }
+    input, textarea, button { width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #d7dce2; margin-top: 0.3rem; }
+    button { background: #e24ad3; color: white; border: none; cursor: pointer; font-weight: 700; }
+    .row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .small { font-size: 0.9rem; color: #636e72; }
+    .project-entry, .upcoming-entry { border: 1px solid #e6eaf0; padding: 0.8rem; border-radius: 8px; margin-top: 0.6rem; }
+    .auth-card { max-width: 480px; margin: 3rem auto; }
+    .auth-toggle { display: inline-block; width: auto; padding: 0.6rem 1rem; margin-right: 0.5rem; background: #f1f4f8; color: #1f3a5f; }
+    .auth-toggle.active { background: #e24ad3; color: #fff; }
+    .hidden { display: none; }
+    .hint { color:#636e72; font-size:0.9rem; margin-top:0.4rem; }
+  </style>
+</head>
+<body>
+  <div id="authScreen" class="card auth-card">
+    <h1>Admin Access</h1>
+    <p class="small">Use the root admin account to manage this dashboard.</p>
+
+    <form id="loginForm">
+      <label>Username</label>
+      <input type="text" name="loginUsername" required />
+      <label>Password</label>
+      <input type="password" name="loginPassword" required />
+      <label>Recovery email (optional)</label>
+      <input type="email" name="recoveryEmail" placeholder="Set or update your recovery email" />
+      <button type="submit" style="margin-top: 1rem;">Login</button>
+    </form>
+
+    <div style="margin: 1rem 0;">
+      <button type="button" id="showForgotBtn" class="auth-toggle" style="width: auto;">Forgot password?</button>
+      <button type="button" id="backToLoginBtn" class="auth-toggle hidden" style="width: auto;">Back to login</button>
+    </div>
+
+    <form id="forgotForm" class="hidden">
+      <label>Username</label>
+      <input type="text" name="forgotUsername" required />
+      <label>Recovery email</label>
+      <input type="email" name="forgotEmail" required />
+      <button type="submit" style="margin-top: 1rem;">Recover</button>
+    </form>
+
+    <p id="authMessage" class="small"></p>
+  </div>
+
+  <div id="adminShell" class="hidden">
+    <div class="card">
+      <h1>Portfolio Admin</h1>
+      <p class="small">Update your portfolio stats, projects, awards, and upcoming work here. Changes appear instantly on the portfolio page.</p>
+      <button type="button" id="logoutBtn" style="margin-top: 1rem; width: auto;">Logout</button>
+    </div>
+
+    <form id="adminForm" class="card" enctype="multipart/form-data">
+      <h2>Stats</h2>
+      <div class="row">
+        <div>
+          <label>Projects</label>
+          <input type="number" name="projects" />
+        </div>
+        <div>
+          <label>Clients</label>
+          <input type="number" name="clients" />
+        </div>
+      </div>
+      <div>
+        <label>Working Hours</label>
+        <input type="number" name="workingHours" />
+      </div>
+      <div>
+        <label>Awards</label>
+        <input type="number" name="awards" />
+      </div>
+
+      <h2 style="margin-top: 1.2rem;">Projects</h2>
+      <div id="projectList"></div>
+      <button type="button" id="addProject">Add project</button>
+
+      <h2 style="margin-top: 1.2rem;">Upcoming Projects</h2>
+      <div id="upcomingProjectsList"></div>
+      <button type="button" id="addUpcomingProject">Add upcoming project</button>
+
+      <h2 style="margin-top: 1.2rem;">Page Images</h2>
+      <label>Logo image</label>
+      <input type="file" name="logoImage" accept="image/*" />
+      <label>Hero image</label>
+      <input type="file" name="heroImage" accept="image/*" />
+      <label>About image</label>
+      <input type="file" name="aboutImage" accept="image/*" />
+      <label>Testimonial image</label>
+      <input type="file" name="testimonialImage" accept="image/*" />
+      <label>Portfolio gallery images (up to 9)</label>
+      <input type="file" name="portfolioImages" multiple accept="image/*" />
+      <label>Service icons (up to 3)</label>
+      <input type="file" name="serviceIcons" multiple accept="image/*" />
+
+      <h2 style="margin-top: 1.2rem;">Social Links</h2>
+      <label>Facebook</label>
+      <input type="url" name="facebookLink" placeholder="https://facebook.com/yourname" />
+      <label>Twitter / X</label>
+      <input type="url" name="twitterLink" placeholder="https://x.com/yourname" />
+      <label>Instagram</label>
+      <input type="url" name="instagramLink" placeholder="https://instagram.com/yourname" />
+      <label>LinkedIn</label>
+      <input type="url" name="linkedinLink" placeholder="https://linkedin.com/in/yourname" />
+
+      <button type="submit" style="margin-top: 1rem;">Save</button>
+    </form>
+  </div>
+
+  <script>
+    const AUTH_KEY = 'portfolioAdminAuth';
+    const SESSION_KEY = 'portfolioAdminLoggedIn';
+    const ROOT_USERNAME = 'loscarmrube';
+    const ROOT_PASSWORD = 'carlos@2024';
+    const projectList = document.getElementById('projectList');
+    const upcomingProjectsList = document.getElementById('upcomingProjectsList');
+    const addProjectButton = document.getElementById('addProject');
+    const addUpcomingProjectButton = document.getElementById('addUpcomingProject');
+    const form = document.getElementById('adminForm');
+    const authScreen = document.getElementById('authScreen');
+    const adminShell = document.getElementById('adminShell');
+    const authMessage = document.getElementById('authMessage');
+    const loginForm = document.getElementById('loginForm');
+    const forgotForm = document.getElementById('forgotForm');
+    const logoutButton = document.getElementById('logoutBtn');
+    const showForgotButton = document.getElementById('showForgotBtn');
+    const backToLoginButton = document.getElementById('backToLoginBtn');
+
+    function hashValue(value) {
+      let hash = 0;
+      for (let index = 0; index < value.length; index += 1) {
+        hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+      }
+      return hash.toString(16);
+    }
+
+    function showMessage(message, isError = false) {
+      authMessage.textContent = message;
+      authMessage.style.color = isError ? '#b23b3b' : '#2d6a4f';
+    }
+
+    function showForgotFlow(showForgot) {
+      forgotForm.classList.toggle('hidden', !showForgot);
+      loginForm.classList.toggle('hidden', showForgot);
+      showForgotButton.classList.toggle('hidden', showForgot);
+      backToLoginButton.classList.toggle('hidden', !showForgot);
+    }
+
+    function saveAuth(auth) {
+      localStorage.setItem(AUTH_KEY, JSON.stringify(auth));
+    }
+
+    function readAuth() {
+      const raw = localStorage.getItem(AUTH_KEY);
+      if (raw) {
+        return JSON.parse(raw);
+      }
+      const defaultAuth = {
+        username: ROOT_USERNAME,
+        passwordHash: hashValue(ROOT_PASSWORD),
+        recoveryEmail: ''
+      };
+      saveAuth(defaultAuth);
+      return defaultAuth;
+    }
+
+    function showAdmin() {
+      authScreen.classList.add('hidden');
+      adminShell.classList.remove('hidden');
+      sessionStorage.setItem(SESSION_KEY, 'true');
+    }
+
+    function hideAdmin() {
+      authScreen.classList.remove('hidden');
+      adminShell.classList.add('hidden');
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+
+    function addProjectEntry(item = {}) {
+      const entry = document.createElement('div');
+      entry.className = 'project-entry';
+      entry.innerHTML = `
+        <label>Project Name</label>
+        <input type="text" name="projectName" value="${item.name || ''}" />
+        <label>Project Link</label>
+        <input type="text" name="projectLink" value="${item.link || ''}" />
+      `;
+      projectList.appendChild(entry);
+    }
+
+    function addUpcomingProjectEntry(item = {}) {
+      const entry = document.createElement('div');
+      entry.className = 'upcoming-entry';
+      entry.innerHTML = `
+        <label>Project Title</label>
+        <input type="text" name="upcomingTitleInput" value="${item.title || ''}" />
+        <label>Summary</label>
+        <textarea name="upcomingSummaryInput" rows="3">${item.summary || ''}</textarea>
+        <label>Link</label>
+        <input type="text" name="upcomingLinkInput" value="${item.link || ''}" />
+        <label>Upload up to 3 images</label>
+        <input type="file" name="upcomingImagesInput" multiple accept="image/*" />
+      `;
+      upcomingProjectsList.appendChild(entry);
+    }
+
+    function saveContent(content) {
+      localStorage.setItem('portfolioContent', JSON.stringify(content));
+      window.dispatchEvent(new CustomEvent('portfolioContentUpdated', { detail: content }));
+    }
+
+    function readContent() {
+      const raw = localStorage.getItem('portfolioContent');
+      return raw ? JSON.parse(raw) : null;
+    }
+
+    function populateForm(data) {
+      form.elements.projects.value = data.stats?.projects || '';
+      form.elements.clients.value = data.stats?.clients || '';
+      form.elements.workingHours.value = data.stats?.workingHours || '';
+      form.elements.awards.value = data.stats?.awards || '';
+      form.elements.facebookLink.value = data.socialLinks?.facebook || '';
+      form.elements.twitterLink.value = data.socialLinks?.twitter || '';
+      form.elements.instagramLink.value = data.socialLinks?.instagram || '';
+      form.elements.linkedinLink.value = data.socialLinks?.linkedin || '';
+      projectList.innerHTML = '';
+      (data.projects || []).forEach(item => addProjectEntry(item));
+      upcomingProjectsList.innerHTML = '';
+      const upcomingProjects = data.upcomingProjects || data.upcoming?.projects || [];
+      if (upcomingProjects.length) {
+        upcomingProjects.forEach(item => addUpcomingProjectEntry(item));
+      } else {
+        addUpcomingProjectEntry();
+      }
+    }
+
+    addProjectButton.addEventListener('click', () => addProjectEntry());
+    addUpcomingProjectButton.addEventListener('click', () => addUpcomingProjectEntry());
+
+showForgotButton.addEventListener('click', () => showForgotFlow(true));
+    backToLoginButton.addEventListener('click', () => showForgotFlow(false));
+
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const auth = readAuth();
+      const username = loginForm.elements.loginUsername.value.trim();
+      const password = loginForm.elements.loginPassword.value;
+      const recoveryEmail = loginForm.elements.recoveryEmail.value.trim();
+      if (auth.username === username && auth.passwordHash === hashValue(password)) {
+        if (recoveryEmail) {
+          auth.recoveryEmail = recoveryEmail;
+          saveAuth(auth);
+        }
+        showAdmin();
+        loadContent();
+        showMessage('');
+      } else {
+        showMessage('Invalid username or password.', true);
+      }
+    });
+
+    forgotForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const auth = readAuth();
+      const username = forgotForm.elements.forgotUsername.value.trim();
+      const recoveryEmail = forgotForm.elements.forgotEmail.value.trim();
+      if (auth.username !== username) {
+        showMessage('The username did not match.', true);
+        return;
+      }
+      if (!recoveryEmail) {
+        showMessage('Please provide the recovery email.', true);
+        return;
+      }
+
+      auth.recoveryEmail = recoveryEmail;
+      saveAuth(auth);
+
+      const subject = encodeURIComponent('Portfolio Admin Password Recovery');
+      const body = encodeURIComponent(`Hello,\n\nYour root admin password is: ${ROOT_PASSWORD}\n\nPlease keep this secure.`);
+      window.location.href = `mailto:${recoveryEmail}?subject=${subject}&body=${body}`;
+      showMessage(`The root password reset message has been prepared for ${recoveryEmail}.`);
+      forgotForm.reset();
+      showForgotFlow(false);
+    });
+
+    logoutButton.addEventListener('click', () => {
+      hideAdmin();
+      showForgotFlow(false);
+      showMessage('You have been logged out.');
+    });
+
+    async function loadContent() {
+      const savedData = readContent();
+      if (savedData) {
+        populateForm(savedData);
+      }
+
+      try {
+        const response = await fetch('/api/content');
+        if (!response.ok) throw new Error('No server response');
+        const data = await response.json();
+        saveContent(data);
+        populateForm(data);
+      } catch (error) {
+        console.info('Using local content storage only.', error);
+      }
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const projects = [];
+      const projectNameInputs = form.querySelectorAll('input[name="projectName"]');
+      const projectLinkInputs = form.querySelectorAll('input[name="projectLink"]');
+
+      projectNameInputs.forEach((nameInput, index) => {
+        const linkInput = projectLinkInputs[index];
+        if (nameInput.value.trim() || linkInput.value.trim()) {
+          projects.push({ name: nameInput.value.trim(), link: linkInput.value.trim() });
+        }
+      });
+
+      const upcomingProjects = [];
+      const upcomingEntries = form.querySelectorAll('.upcoming-entry');
+      const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      for (const entry of upcomingEntries) {
+        const title = entry.querySelector('input[name="upcomingTitleInput"]').value.trim();
+        const summary = entry.querySelector('textarea[name="upcomingSummaryInput"]').value.trim();
+        const link = entry.querySelector('input[name="upcomingLinkInput"]').value.trim();
+        const files = entry.querySelector('input[name="upcomingImagesInput"]').files;
+        const images = [];
+        for (let index = 0; index < Math.min(files.length, 3); index += 1) {
+          images.push(await readFileAsDataUrl(files[index]));
+        }
+        if (title || summary || link || images.length) {
+          upcomingProjects.push({ title, summary, link, images });
+        }
+      }
+
+      const existingContent = readContent() || {};
+      const images = {
+        logo: existingContent.images?.logo || '',
+        hero: existingContent.images?.hero || '',
+        about: existingContent.images?.about || '',
+        testimonial: existingContent.images?.testimonial || '',
+        portfolio: existingContent.images?.portfolio || [],
+        serviceIcons: existingContent.images?.serviceIcons || []
+      };
+
+      if (form.elements.logoImage.files[0]) {
+        images.logo = await readFileAsDataUrl(form.elements.logoImage.files[0]);
+      }
+      if (form.elements.heroImage.files[0]) {
+        images.hero = await readFileAsDataUrl(form.elements.heroImage.files[0]);
+      }
+      if (form.elements.aboutImage.files[0]) {
+        images.about = await readFileAsDataUrl(form.elements.aboutImage.files[0]);
+      }
+      if (form.elements.testimonialImage.files[0]) {
+        images.testimonial = await readFileAsDataUrl(form.elements.testimonialImage.files[0]);
+      }
+
+      const portfolioFiles = Array.from(form.elements.portfolioImages.files || []);
+      const nextPortfolio = [...(images.portfolio || [])];
+      for (let index = 0; index < portfolioFiles.length && index < 9; index += 1) {
+        nextPortfolio[index] = await readFileAsDataUrl(portfolioFiles[index]);
+      }
+      images.portfolio = nextPortfolio;
+
+      const serviceFiles = Array.from(form.elements.serviceIcons.files || []);
+      const nextServiceIcons = [...(images.serviceIcons || [])];
+      for (let index = 0; index < serviceFiles.length && index < 3; index += 1) {
+        nextServiceIcons[index] = await readFileAsDataUrl(serviceFiles[index]);
+      }
+      images.serviceIcons = nextServiceIcons;
+
+      const socialLinks = {
+        facebook: form.elements.facebookLink.value.trim(),
+        twitter: form.elements.twitterLink.value.trim(),
+        instagram: form.elements.instagramLink.value.trim(),
+        linkedin: form.elements.linkedinLink.value.trim()
+      };
+
+      const content = {
+        stats: {
+          projects: Number(form.elements.projects.value) || 0,
+          clients: Number(form.elements.clients.value) || 0,
+          workingHours: Number(form.elements.workingHours.value) || 0,
+          awards: Number(form.elements.awards.value) || 0
+        },
+        projects,
+        upcomingProjects,
+        upcoming: {
+          projects: upcomingProjects
+        },
+        images,
+        socialLinks
+      };
+
+      saveContent(content);
+
+      try {
+        const formData = new FormData(form);
+        formData.append('projectsList', JSON.stringify(projects));
+        formData.append('upcomingProjectsList', JSON.stringify(upcomingProjects));
+        const response = await fetch('/api/content', {
+          method: 'POST',
+          body: formData
+        });
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success) {
+            saveContent(result.content);
+          }
+        }
+      } catch (error) {
+        console.info('Saved locally only.', error);
+      }
+
+      alert('Saved successfully');
+    });
+
+    if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+      showAdmin();
+      loadContent();
+    } else {
+      showForgotFlow(false);
+    }
+    addProjectEntry();
+    addUpcomingProjectEntry();
+  </script>
+</body>
+</html>

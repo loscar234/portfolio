@@ -46,7 +46,7 @@
             <nav>
                 <div class="container">
                     <div class="logo">
-                        <img src="./img/logo.png" alt="Logo" />
+                        <img src="./img/logo.png" class="responsive-image" alt="Logo" data-image-role="logo" />
                     </div>
 
                     <div class="links">
@@ -103,7 +103,7 @@
                             class="points points2"
                             alt=""
                         />
-                        <img src="./img/person.png" class="img-element z-index" alt="" />
+                        <img src="./img/person.png" class="img-element z-index responsive-image" alt="" data-image-role="hero" />
                     </div>
                 </div>
             </div>
@@ -128,7 +128,7 @@
                         />
                         <div class="card" data-card="UI/UX">
                             <div class="card-content z-index">
-                                <img src="./img/design-icon.png" class="icon" alt="" />
+                                <img src="./img/design-icon.png" class="icon responsive-image" alt="" data-image-role="service-icon-1" />
                                 <h3 class="title-sm">Custom Software &amp; App Development</h3>
                                 <p class="text">
                                     I transform complex conceptual ideas into functional, high-performance applications. Specializing in Object-Oriented Programming (Java &amp; C++), I build scalable structural systems designed for performance and reliability.
@@ -143,7 +143,7 @@
                     <div class="card-wrap">
                         <div class="card" data-card="Code">
                             <div class="card-content z-index">
-                                <img src="./img/code-icon.png" class="icon" alt="" />
+                                <img src="./img/code-icon.png" class="icon responsive-image" alt="" data-image-role="service-icon-2" />
                                 <h3 class="title-sm">Backend Engineering &amp; Database Architecture</h3>
                                 <p class="text">A beautiful frontend needs a powerful, secure backend. I design robust system architectures, construct efficient database schemas, and optimize queries to ensure your data pipelines run flawlessly without bottlenecks.</p>
                                 <p class="text"><strong>What I Deliver:</strong> Relational database design (ER modeling, normalization), optimized SQL/MySQL queries, secure backend logic, and system administration workflows.</p>
@@ -161,7 +161,7 @@
                         />
                         <div class="card" data-card="App">
                             <div class="card-content z-index">
-                                <img src="./img/design-icon.png" class="icon" alt="App Development Icon" />
+                                <img src="./img/design-icon.png" class="icon responsive-image" alt="App Development Icon" data-image-role="service-icon-3" />
                                 <h3 class="title-sm">Creative Tech &amp; UI/UX Design</h3>
                                 <p class="text">Where technical logic meets visual storytelling. I bridge the gap between engineering and creativity by designing clean, intuitive user interfaces and producing high-quality digital media components that elevate a brand's digital presence.</p>
                                 <p class="text"><strong>What I Deliver:</strong> Wireframing and UI/UX layouts, custom digital asset design, and engaging technical video content/vlogs for product showcases.</p>
@@ -204,6 +204,8 @@
                 <div class="section-header">
                     <h3 class="title" data-title="My works">Portfolio</h3>
                 </div>
+
+                <div id="managedProjects" class="project-links"></div>
 
                 <div class="section-body">
                     <div class="filter">
@@ -373,7 +375,7 @@
 
                     <div class="column-2 image">
                         <img src="./img/shape-placeholder.svg" class="points" alt="" />
-                        <img src="./img/about.png" class="z-index" alt="" />
+                        <img src="./img/about.png" class="z-index responsive-image about-image" alt="" data-image-role="about" />
                     </div>
                 </div>
             </div>
@@ -399,31 +401,79 @@
             <div class="container">
                 <div class="wrap">
                     <div class="record-circle">
-                        <h2 class="number" data-num="235">0</h2>
+                        <h2 class="number" id="projectsCount" data-num="235">0</h2>
                         <h4 class="sub-title">Projects</h4>
                     </div>
                 </div>
 
                 <div class="wrap">
                     <div class="record-circle">
-                        <h2 class="number" data-num="174">0</h2>
+                        <h2 class="number" id="clientsCount" data-num="174">0</h2>
                         <h4 class="sub-title">Happy Clients</h4>
                     </div>
                 </div>
 
                 <div class="wrap">
                     <div class="record-circle">
-                        <h2 class="number" data-num="892">0</h2>
-                        <h4 class="sub-title">Work Hour</h4>
+                        <h2 class="number" id="workingHoursCount" data-num="892">0</h2>
+                        <h4 class="sub-title">Work Hours</h4>
                     </div>
                 </div>
 
                 <div class="wrap">
                     <div class="record-circle">
-                        <h2 class="number" data-num="368">0</h2>
+                        <h2 class="number" id="awardsCount" data-num="368">0</h2>
                         <h4 class="sub-title">Awards</h4>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- UPCOMING PROJECTS SECTION -->
+        <section class="upcoming-projects section">
+            <div class="container">
+                <div class="section-header">
+                    <h3 class="title" data-title="Coming next">Upcoming projects</h3>
+                    <p class="text">
+                        This section is updated from the admin dashboard whenever I am preparing a new release or collaboration.
+                    </p>
+                </div>
+
+                <div id="upcomingProjectsList" class="upcoming-list"></div>
+            </div>
+        </section>
+
+        <!-- CLIENT RATINGS SECTION -->
+        <section class="ratings section">
+            <div class="container">
+                <div class="section-header">
+                    <h3 class="title" data-title="Client feedback">Client ratings</h3>
+                    <p class="text">
+                        Clients can leave a quick rating and short feedback about my work.
+                    </p>
+                </div>
+
+                <div class="rating-summary">
+                    <div class="rating-score" id="ratingScore">0.0</div>
+                    <div class="rating-stars" id="ratingStars">★★★★★</div>
+                    <p class="text" id="ratingCount">0 ratings</p>
+                </div>
+
+                <form id="ratingForm" class="rating-form">
+                    <input type="text" name="raterName" placeholder="Your name" required />
+                    <input type="text" name="raterRole" placeholder="Your role" />
+                    <textarea name="raterComment" placeholder="Share your experience" rows="3" required></textarea>
+                    <div class="rating-options">
+                        <label><input type="radio" name="stars" value="1" required /> 1</label>
+                        <label><input type="radio" name="stars" value="2" /> 2</label>
+                        <label><input type="radio" name="stars" value="3" /> 3</label>
+                        <label><input type="radio" name="stars" value="4" /> 4</label>
+                        <label><input type="radio" name="stars" value="5" /> 5</label>
+                    </div>
+                    <button type="submit" class="btn">Submit rating</button>
+                </form>
+
+                <div id="ratingList" class="rating-list"></div>
             </div>
         </section>
 
@@ -533,7 +583,7 @@
                                     </p>
 
                                     <div class="review-info">
-                                        <img src="./img/testi.png" class="author-image" alt="Matias Butt" />
+                                        <img src="./img/testi.png" class="author-image responsive-image" alt="Matias Butt" data-image-role="testimonial" />
                                         <div class="author-info">
                                             <h3 class="review-name">Matias Butt</h3>
                                             <h5 class="review-job">Product Manager, Nairobi</h5>
@@ -556,7 +606,7 @@
                                     </p>
 
                                     <div class="review-info">
-                                        <img src="./img/testi.png" class="author-image" alt="Romeo Herbert" />
+                                        <img src="./img/testi.png" class="author-image responsive-image" alt="Romeo Herbert" data-image-role="testimonial" />
                                         <div class="author-info">
                                             <h3 class="review-name">Romeo Herbert</h3>
                                             <h5 class="review-job">CEO, Nairobi</h5>
@@ -579,7 +629,7 @@
                                     </p>
 
                                     <div class="review-info">
-                                        <img src="./img/testi.png" class="author-image" alt="Reiss Mccartney" />
+                                        <img src="./img/testi.png" class="author-image responsive-image" alt="Reiss Mccartney" data-image-role="testimonial" />
                                         <div class="author-info">
                                             <h3 class="review-name">Reiss Mccartney</h3>
                                             <h5 class="review-job">Engineer, Nairobi</h5>
@@ -598,7 +648,7 @@
                     </div>
 
                     <div class="column-2 image">
-                        <img src="./img/testi.png" alt="" class="img-element" />
+                        <img src="./img/testi.png" alt="" class="img-element responsive-image" data-image-role="testimonial-main" />
                     </div>
                 </div>
             </div>
@@ -637,24 +687,34 @@
                         </div>
                     </div>
 
-                    <div class="contact-form">
+                    <form
+                        class="contact-form"
+                        action="https://formsubmit.co/carlosnduva254@gmail.com"
+                        method="POST"
+                    >
+                        <input type="hidden" name="_subject" value="New portfolio contact message" />
+                        <input type="hidden" name="_captcha" value="false" />
                         <h3 class="title">Contact me</h3>
                         <div class="row">
                             <input
                                 type="text"
                                 class="contact-input"
+                                name="firstName"
                                 placeholder="First Name"
+                                required
                             />
                             <input
                                 type="text"
                                 class="contact-input"
+                                name="lastName"
                                 placeholder="Last Name"
+                                required
                             />
                         </div>
 
                         <div class="row">
-                            <input type="text" class="contact-input" placeholder="Phone" />
-                            <input type="email" class="contact-input" placeholder="Email" />
+                            <input type="text" class="contact-input" name="phone" placeholder="Phone" />
+                            <input type="email" class="contact-input" name="email" placeholder="Email" required />
                         </div>
 
                         <div class="row">
@@ -662,10 +722,11 @@
                                 name="message"
                                 class="contact-input textarea"
                                 placeholder="Message"
+                                required
                             ></textarea>
                         </div>
-                        <a href="#" class="btn">Send</a>
-                    </div>
+                        <button type="submit" class="btn">Send</button>
+                    </form>
                 </div>
             </div>
         </section>
@@ -762,16 +823,16 @@
                         <h3>Follow me</h3>
                         <span class="footer-line"></span>
                         <div class="social-media">
-                            <a href="#">
+                            <a href="#" class="social-link" data-social-platform="facebook" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="#">
+                            <a href="#" class="social-link" data-social-platform="twitter" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-twitter"></i>
                             </a>
-                            <a href="#">
+                            <a href="#" class="social-link" data-social-platform="instagram" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-instagram"></i>
                             </a>
-                            <a href="#">
+                            <a href="#" class="social-link" data-social-platform="linkedin" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
                         </div>

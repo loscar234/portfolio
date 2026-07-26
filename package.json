@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-admin",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "node --test tests/contentStore.test.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "multer": "^1.21.0"
+  }
+}
