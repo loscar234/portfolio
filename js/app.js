@@ -199,10 +199,19 @@ const renderRatings = () => {
     `).join('');
 };
 
+const normalizeSocialUrl = (value = '') => {
+    const trimmed = String(value).trim();
+    if (!trimmed) return '';
+    if (/^https?:\/\//i.test(trimmed) || /^mailto:/i.test(trimmed)) {
+        return trimmed;
+    }
+    return `https://${trimmed}`;
+};
+
 const renderSocialLinks = (socialLinks = {}) => {
     document.querySelectorAll('.social-link').forEach((anchor) => {
         const platform = anchor.getAttribute('data-social-platform');
-        const url = socialLinks[platform] || '';
+        const url = normalizeSocialUrl(socialLinks[platform] || '');
 
         if (url) {
             anchor.href = url;
@@ -245,14 +254,6 @@ const applyImageContent = (content = {}) => {
         if (imageValue) {
             setImageFromValue(img, imageValue);
         }
-    });
-
-    document.querySelectorAll('img[data-image-role="testimonial"]').forEach(img => {
-        setImageFromValue(img, images.testimonial);
-    });
-
-    document.querySelectorAll('img[data-image-role="testimonial-main"]').forEach(img => {
-        setImageFromValue(img, images.testimonial);
     });
 
     document.querySelectorAll('img[data-image-role^="service-icon"]').forEach((img, index) => {
@@ -337,26 +338,6 @@ const counterObserver = new IntersectionObserver((entries) => {
 if (recordsSection) {
     counterObserver.observe(recordsSection);
 }
-
-// ============ SWIPER TESTIMONIALS CAROUSEL ============
-const swiper = new Swiper('.swiper-container', {
-    slidesPerView: 1,
-    spaceBetween: 30,
-    loop: true,
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
-    autoplay: {
-        delay: 5000,
-        disableOnInteraction: false,
-    },
-    breakpoints: {
-        768: {
-            slidesPerView: 1,
-        }
-    }
-});
 
 // ============ SCROLL TO TOP ============
 const backBtn = document.querySelector('.back-btn');

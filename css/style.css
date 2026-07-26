@@ -1333,55 +1333,7 @@ footer .text {
     }
 }
 
-/* ============ TESTIMONIALS SECTION ============ */
-.testimonials {
-    background: var(--white);
-}
 
-.testi-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: center;
-}
-
-@media (max-width: 768px) {
-    .testi-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-}
-
-.reviews {
-    position: relative;
-}
-
-.swiper-container {
-    position: relative;
-}
-
-.review {
-    background: var(--light-bg);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    text-align: center;
-}
-
-.quote {
-    font-size: 2rem;
-    color: var(--secondary-color);
-    margin-bottom: 1rem;
-}
-
-.rate {
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-}
-
-.rate i {
-    color: #ffd700;
-    margin: 0 2px;
-}
 
 .review-text {
     color: var(--text-light);
