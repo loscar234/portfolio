@@ -53,7 +53,7 @@ export const projects = [
   {
     num: '02', label: 'Academic · Desktop', title: 'Student Management System', status: 'Academic project',
     description: 'A Java desktop application exploring student records, academic results, relational data, JDBC integration and MVC separation of responsibilities.',
-    tech: ['Java', 'MySQL', 'JDBC', 'MVC'], href: '', cta: 'Repository soon',
+    tech: ['Java', 'MySQL', 'JDBC', 'MVC'], href: '', cta: 'Repository soon', image: 'media/student-management.png',
   },
   {
     num: '03', label: 'Linux · Systems tooling', title: 'Kali System Management Toolkit', status: 'Public repository',
