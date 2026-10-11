@@ -9,10 +9,10 @@ import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 import './styles.css';
 
-import { icon, brandIcon, githubIcon, star } from './icons.js';
+import { icon, brandIcon, githubIcon, whatsappIcon, star } from './icons.js';
 import { projectVisuals } from './visuals.js';
 import {
-  EMAIL, GITHUB, NAME, FULL_NAME, ACADEMIC_STATUS, roles, skills, process as steps, projects, lab, experience, chapters, softSkills,
+  EMAIL, GITHUB, WHATSAPP, NAME, FULL_NAME, ACADEMIC_STATUS, roles, skills, process as steps, projects, lab, experience, chapters, softSkills,
 } from './data.js';
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -73,6 +73,7 @@ app.innerHTML = `
       <div class="socials">
         <a href="${GITHUB}" target="_blank" rel="noreferrer" aria-label="GitHub">${githubIcon(19)}</a>
         <a href="mailto:${EMAIL}" aria-label="Email">${icon('mail', 19, 1.8)}</a>
+        <a href="${WHATSAPP}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">${whatsappIcon(19)}</a>
       </div>
     </div>
     <div class="hero-visual">
@@ -233,8 +234,13 @@ app.innerHTML = `
         <h2>Let’s build something <span class="underlined">meaningful.</span></h2>
         <p>Have an idea, a project, or just want to connect? Feel free to reach out.</p>
         <div class="contact-line"><i></i><span>${NAME_UP} / AVAILABLE FOR NEW PROJECTS</span></div>
-        <div class="contact-icons"><a href="${GITHUB}" target="_blank" rel="noreferrer" aria-label="GitHub">${githubIcon(18)}</a><a class="email-copy-btn" href="mailto:${EMAIL}" aria-label="Email">${icon('mail', 18, 1.8)}</a></div>
+        <div class="contact-icons">
+          <a href="${GITHUB}" target="_blank" rel="noreferrer" aria-label="GitHub">${githubIcon(18)}</a>
+          <a class="email-copy-btn" href="mailto:${EMAIL}" aria-label="Email">${icon('mail', 18, 1.8)}</a>
+          <a class="contact-wa-icon" href="${WHATSAPP}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">${whatsappIcon(18)}</a>
+        </div>
         <a class="contact-mail email-copy-btn" id="direct-email-btn" href="mailto:${EMAIL}">${icon('mail', 14, 1.8)} <span class="email-label">${EMAIL}</span></a>
+        <a class="contact-mail contact-wa" href="${WHATSAPP}" target="_blank" rel="noopener noreferrer">${whatsappIcon(14)} WhatsApp</a>
         <span class="contact-loc">${icon('pin', 14, 1.8)} Chuka, Tharaka-Nithi County · Kenya</span>
       </div>
       <form class="contact-card reveal" id="contact-form" action="https://api.web3forms.com/submit" method="POST" style="--d:120ms">
@@ -260,7 +266,11 @@ app.innerHTML = `
     <div class="foot-meta"><span>${NAME_UP} / PORTFOLIO</span><span>© ${YEAR} ${NAME_UP}</span></div>
     <div class="foot-main">
       <a class="foot-brand" href="#home"><b>${NAME_UP[0]}</b><span><strong>${NAME_UP}</strong><small>FULL STACK DEVELOPER</small></span></a>
-      <div class="foot-links"><a href="${GITHUB}" target="_blank" rel="noreferrer">GitHub</a><a class="foot-email email-copy-btn" href="mailto:${EMAIL}">Email</a></div>
+      <div class="foot-links">
+        <a href="${GITHUB}" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="foot-email email-copy-btn" href="mailto:${EMAIL}">Email</a>
+        <a class="foot-wa" href="${WHATSAPP}" target="_blank" rel="noopener noreferrer">${whatsappIcon(13)} WhatsApp</a>
+      </div>
     </div>
     <div class="foot-bottom"><span>© ${YEAR} ${NAME_UP}. All rights reserved.</span><a class="to-top" href="#home">Back to top <i>${icon('arrowUp', 12, 2)}</i></a></div>
   </div>

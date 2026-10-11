@@ -1,7 +1,7 @@
 import {
   siHtml5, siCss, siJavascript, siTypescript, siReact, siNextdotjs, siNodedotjs, siNestjs,
   siFlutter, siDart, siOpenjdk, siCplusplus, siKotlin, siPostgresql, siMysql, siGit, siGithub,
-  siLinux, siGnubash, siDocker, siGithubactions, siKalilinux,
+  siLinux, siGnubash, siDocker, siGithubactions, siKalilinux, siWhatsapp,
 } from 'simple-icons';
 
 const brand = (i, size = 28) =>
@@ -11,7 +11,7 @@ export const brands = {
   html: siHtml5, css: siCss, js: siJavascript, ts: siTypescript, react: siReact, next: siNextdotjs,
   node: siNodedotjs, nest: siNestjs, flutter: siFlutter, dart: siDart, java: siOpenjdk, cpp: siCplusplus,
   kotlin: siKotlin, pg: siPostgresql, mysql: siMysql, git: siGit, github: siGithub, linux: siLinux,
-  bash: siGnubash, docker: siDocker, actions: siGithubactions, kali: siKalilinux,
+  bash: siGnubash, docker: siDocker, actions: siGithubactions, kali: siKalilinux, whatsapp: siWhatsapp,
 };
 
 const paths = {
@@ -56,6 +56,8 @@ export const icon = (name, size = 18, sw = 1.7) =>
 export const brandIcon = (key, size = 28) => brand(brands[key], size);
 
 export const githubIcon = (size = 18) => brand(siGithub, size);
+
+export const whatsappIcon = (size = 18) => brand(siWhatsapp, size);
 
 export const star = (size = 56) =>
   `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 64 64"><path fill="currentColor" d="M32 0c1.6 14.6 5.4 24.2 11.2 28.8C47.6 32.3 54.4 31.4 64 32c-14.2 1.8-23.4 5.6-27.6 11.4C33 48.2 32.9 55 32 64c-1.4-13.8-5.2-23-11.2-27.6C16.4 33 9.4 32.6 0 32c13.2-1.6 22.2-5.4 27.4-11.6C31 16 31.2 9 32 0Z"/></svg>`;
