@@ -329,9 +329,11 @@ body.ready .screen-scan { animation: scan 6.5s 3.2s linear infinite; }
 .contact-icons a { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; transition: transform .3s var(--ease), background .25s; }
 .contact-icons a:hover { background: var(--accent); transform: translateY(-4px); }
 .contact-icons a.contact-wa-icon:hover { background: #25d366; }
+.contact-icons a.contact-phone-icon:hover { background: #0070f3; }
 .contact-mail, .contact-loc { display: flex; align-items: center; gap: 9px; font-size: 12.5px; color: #3a4054; margin-top: 8px; }
 .contact-mail:hover { color: var(--accent); }
 .contact-mail.contact-wa:hover { color: #128c7e; }
+.contact-mail.contact-phone:hover { color: #0070f3; }
 .contact-card { position: relative; background: #fff; border-radius: 28px; padding: 34px 34px 28px; box-shadow: 0 50px 80px -40px rgba(12, 17, 34, .4), 0 12px 24px -16px rgba(12, 17, 34, .18); display: grid; gap: 18px; }
 .card-accent { position: absolute; top: 0; left: 34px; width: 112px; height: 2px; background: var(--accent); border-radius: 2px; }
 .contact-card h3 { font-size: 23px; font-weight: 800; letter-spacing: -.02em; margin-top: -4px; }
@@ -366,6 +368,7 @@ body.ready .screen-scan { animation: scan 6.5s 3.2s linear infinite; }
 .foot-links a { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: clamp(10px, 0.75rem, 11px); letter-spacing: .2em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; border: 1px solid #ddd8cf; color: #6c717e; background: rgba(255, 255, 255, .5); transition: background .25s, color .25s, border-color .25s, transform .3s var(--ease); }
 .foot-links a:hover { background: var(--accent-2); border-color: var(--accent-2); color: #fff; transform: translateY(-2px); }
 .foot-links a.foot-wa:hover { background: #25d366; border-color: #25d366; color: #fff; }
+.foot-links a.foot-phone:hover { background: #0070f3; border-color: #0070f3; color: #fff; }
 .foot-bottom { margin-top: 26px; display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: clamp(10px, 0.75rem, 11px); letter-spacing: .2em; text-transform: uppercase; color: #6c717e; }
 .to-top { display: inline-flex; align-items: center; gap: 9px; transition: color .25s; } .to-top:hover { color: var(--accent); }
 .to-top i { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; border: 1px solid #ddd8cf; transition: transform .3s var(--ease), background .25s; }

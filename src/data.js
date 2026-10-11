@@ -2,6 +2,7 @@
 export const EMAIL = 'carlosnduva254@gmail.com';
 export const GITHUB = 'https://github.com/loscar234';
 export const WHATSAPP = 'https://wa.me/254762230847?text=Hi%20Carlos!%20I%20am%20reaching%20out%20from%20your%20portfolio';
+export const PHONE = '+254791656215';
 export const NAME = 'Carlos';
 export const FULL_NAME = 'Carlos Nduva';
 export const ACADEMIC_STATUS = 'Third-year Computer Science student (Year 3, Semester 1)';
