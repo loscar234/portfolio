@@ -86,6 +86,12 @@ app.innerHTML = `
             <video id="hero-video" muted loop playsinline preload="auto" poster="${BASE}media/hero-poster.jpg" aria-label="Portrait of ${FULL_NAME}">
               <source src="${BASE}media/hero-loop.webm" type="video/webm" /><source src="${BASE}media/hero-loop.mp4" type="video/mp4" />
             </video>
+            <audio id="hero-audio" preload="auto" src="${BASE}media/hero-voice.wav"></audio>
+            <button class="monitor-audio-btn" id="monitor-audio-btn" type="button" aria-label="Toggle voiceover introduction">
+              <span class="m-audio-icon">${icon('volume', 15, 2)}</span>
+              <span class="m-audio-label">Click to Unmute</span>
+              <span class="m-audio-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            </button>
             <div class="screen-glare"></div><div class="screen-scan"></div>
           </div>
           <div class="monitor-chin"><div class="speaker">${'<i></i>'.repeat(14)}</div><div class="chin-row"><b></b><u></u><b></b></div></div>
@@ -571,6 +577,78 @@ document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el))
         label.textContent = originalText;
       }, 2000);
     });
+  });
+})();
+
+/* ------------------------------------------------ CRT Monitor Audio Controller */
+(() => {
+  const audioBtn = document.querySelector('#monitor-audio-btn');
+  const heroAudio = document.querySelector('#hero-audio');
+  const heroVideo = document.querySelector('#hero-video');
+  if (!audioBtn || !heroAudio) return;
+
+  const audioIcon = audioBtn.querySelector('.m-audio-icon');
+  const audioLabel = audioBtn.querySelector('.m-audio-label');
+
+  let isPlaying = false;
+
+  const updateUI = (playing) => {
+    isPlaying = playing;
+    if (playing) {
+      audioBtn.classList.add('is-playing');
+      if (audioIcon) audioIcon.innerHTML = icon('volume', 15, 2);
+      if (audioLabel) audioLabel.textContent = 'Mute Voice';
+    } else {
+      audioBtn.classList.remove('is-playing');
+      if (audioIcon) audioIcon.innerHTML = icon('volumeX', 15, 2);
+      if (audioLabel) audioLabel.textContent = 'Play Voiceover';
+    }
+  };
+
+  const playVoice = async () => {
+    try {
+      if (heroVideo) {
+        heroVideo.currentTime = 0;
+        heroVideo.muted = false;
+        heroVideo.play().catch(() => {});
+      }
+      heroAudio.currentTime = 0;
+      await heroAudio.play();
+      updateUI(true);
+    } catch (err) {
+      console.warn('Hero audio play error:', err);
+      updateUI(false);
+    }
+  };
+
+  const pauseVoice = () => {
+    heroAudio.pause();
+    if (heroVideo) {
+      heroVideo.muted = true;
+    }
+    updateUI(false);
+  };
+
+  audioBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isPlaying && !heroAudio.paused) {
+      pauseVoice();
+    } else {
+      playVoice();
+    }
+  });
+
+  heroAudio.addEventListener('ended', () => {
+    updateUI(false);
+    if (heroVideo) {
+      heroVideo.muted = true;
+    }
+  });
+
+  heroAudio.addEventListener('pause', () => {
+    if (!heroAudio.seeking && isPlaying) {
+      updateUI(false);
+    }
   });
 })();
 
