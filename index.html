@@ -9,7 +9,16 @@
     <title>Carlos Nduva — Software Developer Portfolio</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="4bca0f5e-d5c5-4e58-845f-6fd3261afc1a" />
+        <input required name="name" type="text" placeholder="Your name" autocomplete="name" />
+        <input required name="email" type="email" placeholder="you@email.com" autocomplete="email" />
+        <textarea required name="message" rows="5" placeholder="Tell me what you’re thinking..."></textarea>
+        <button type="submit">Send message</button>
+      </form>
+      <a id="direct-email-btn" href="mailto:carlosnduva254@gmail.com">carlosnduva254@gmail.com</a>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

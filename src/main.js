@@ -233,20 +233,20 @@ app.innerHTML = `
         <h2>Let’s build something <span class="underlined">meaningful.</span></h2>
         <p>Have an idea, a project, or just want to connect? Feel free to reach out.</p>
         <div class="contact-line"><i></i><span>${NAME_UP} / AVAILABLE FOR NEW PROJECTS</span></div>
-        <div class="contact-icons"><a href="${GITHUB}" target="_blank" rel="noreferrer" aria-label="GitHub">${githubIcon(18)}</a><a href="mailto:${EMAIL}" aria-label="Email">${icon('mail', 18, 1.8)}</a></div>
-        <a class="contact-mail" href="mailto:${EMAIL}">${icon('mail', 14, 1.8)} ${EMAIL}</a>
+        <div class="contact-icons"><a href="${GITHUB}" target="_blank" rel="noreferrer" aria-label="GitHub">${githubIcon(18)}</a><a class="email-copy-btn" href="mailto:${EMAIL}" aria-label="Email">${icon('mail', 18, 1.8)}</a></div>
+        <a class="contact-mail email-copy-btn" id="direct-email-btn" href="mailto:${EMAIL}">${icon('mail', 14, 1.8)} <span class="email-label">${EMAIL}</span></a>
         <span class="contact-loc">${icon('pin', 14, 1.8)} Chuka, Tharaka-Nithi County · Kenya</span>
       </div>
-      <form class="contact-card reveal" id="contact-form" style="--d:120ms" novalidate>
+      <form class="contact-card reveal" id="contact-form" action="https://api.web3forms.com/submit" method="POST" style="--d:120ms">
+        <input type="hidden" name="access_key" value="4bca0f5e-d5c5-4e58-845f-6fd3261afc1a" />
         <i class="card-accent"></i>
         <span class="eyebrow sm">${icon('mail', 13, 1.8)} Start a conversation</span>
         <h3>Tell me about your idea.</h3>
         <p class="card-sub">Fill in the details below and I’ll get back to you.</p>
         <div class="field-row">
-          <label><span>First name</span><input required name="first" type="text" placeholder="Jane" autocomplete="given-name" /></label>
-          <label><span>Last name</span><input required name="last" type="text" placeholder="Your last name" autocomplete="family-name" /></label>
+          <label><span>Name <b>*</b></span><input required name="name" type="text" placeholder="Your name" autocomplete="name" /></label>
+          <label><span>Email <b>*</b></span><input required name="email" type="email" placeholder="you@email.com" autocomplete="email" /></label>
         </div>
-        <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com" autocomplete="email" /></label>
         <label><span>Message <b>*</b></span><textarea required name="message" rows="5" placeholder="Tell me what you’re thinking..."></textarea></label>
         <div class="form-foot"><span class="replies"><i></i>Usually replies via email</span><button class="send" type="submit">Send message ${icon('arrow', 14, 2)}</button></div>
         <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
@@ -260,7 +260,7 @@ app.innerHTML = `
     <div class="foot-meta"><span>${NAME_UP} / PORTFOLIO</span><span>© ${YEAR} ${NAME_UP}</span></div>
     <div class="foot-main">
       <a class="foot-brand" href="#home"><b>${NAME_UP[0]}</b><span><strong>${NAME_UP}</strong><small>FULL STACK DEVELOPER</small></span></a>
-      <div class="foot-links"><a href="${GITHUB}" target="_blank" rel="noreferrer">GitHub</a><a href="mailto:${EMAIL}">Email</a></div>
+      <div class="foot-links"><a href="${GITHUB}" target="_blank" rel="noreferrer">GitHub</a><a class="foot-email email-copy-btn" href="mailto:${EMAIL}">Email</a></div>
     </div>
     <div class="foot-bottom"><span>© ${YEAR} ${NAME_UP}. All rights reserved.</span><a class="to-top" href="#home">Back to top <i>${icon('arrowUp', 12, 2)}</i></a></div>
   </div>
@@ -466,18 +466,96 @@ document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el))
 (() => {
   const form = document.querySelector('#contact-form');
   const status = document.querySelector('#form-status');
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const d = new FormData(form);
-    const first = String(d.get('first') || '').trim(); const last = String(d.get('last') || '').trim();
-    const email = String(d.get('email') || '').trim(); const message = String(d.get('message') || '').trim();
-    if (!first || !email || !message || !/^\S+@\S+\.\S+$/.test(email)) {
-      status.textContent = 'Please add your name, a valid email and a short message.'; status.className = 'form-status show err'; return;
-    }
-    const subject = encodeURIComponent(`Portfolio enquiry from ${first} ${last}`.trim());
-    const body = encodeURIComponent(`${message}\n\n— ${first} ${last}\nReply to: ${email}`);
-    status.textContent = 'Thanks! Your email app is opening with the message ready to send.'; status.className = 'form-status show ok';
-    window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+  const submitBtn = form?.querySelector('button[type="submit"]');
+
+  if (form && submitBtn) {
+    const originalBtnContent = submitBtn.innerHTML;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (form.checkValidity && !form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          submitBtn.textContent = 'Message sent successfully!';
+          form.reset();
+          if (status) {
+            status.textContent = 'Message sent successfully! Thanks for reaching out.';
+            status.className = 'form-status show ok';
+          }
+          setTimeout(() => {
+            submitBtn.innerHTML = originalBtnContent;
+            submitBtn.disabled = false;
+            if (status) {
+              status.className = 'form-status';
+              status.textContent = '';
+            }
+          }, 3000);
+        } else {
+          submitBtn.textContent = 'Error sending message.';
+          if (status) {
+            status.textContent = 'Something went wrong. Please try again.';
+            status.className = 'form-status show err';
+          }
+          setTimeout(() => {
+            submitBtn.innerHTML = originalBtnContent;
+            submitBtn.disabled = false;
+            if (status) {
+              status.className = 'form-status';
+              status.textContent = '';
+            }
+          }, 3000);
+        }
+      } catch (err) {
+        submitBtn.textContent = 'Error sending message.';
+        if (status) {
+          status.textContent = 'Network error. Please try again later.';
+          status.className = 'form-status show err';
+        }
+        setTimeout(() => {
+          submitBtn.innerHTML = originalBtnContent;
+          submitBtn.disabled = false;
+          if (status) {
+            status.className = 'form-status';
+            status.textContent = '';
+          }
+        }, 3000);
+      }
+    });
+  }
+})();
+
+/* ----------------------------------- direct email clipboard copy fallback */
+(() => {
+  const emailButtons = document.querySelectorAll(
+    '#direct-email-btn, .contact-mail, .foot-email, a[href="mailto:carlosnduva254@gmail.com"], a[href^="mailto:"]'
+  );
+
+  emailButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (navigator?.clipboard?.writeText) {
+        navigator.clipboard.writeText('carlosnduva254@gmail.com').catch(() => {});
+      }
+      const label = btn.querySelector('.email-label') || btn;
+      const originalText = label.textContent;
+      label.textContent = 'Copied!';
+      setTimeout(() => {
+        label.textContent = originalText;
+      }, 2000);
+    });
   });
 })();
 
