@@ -19,6 +19,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 const pad2 = (n) => String(n).padStart(2, '0');
 const YEAR = new Date().getFullYear();
 const NAME_UP = NAME.toUpperCase();
+const BASE = import.meta.env.BASE_URL;
 
 const wave = (cls = '', d = 'M0 44C180 92 360 8 600 38S1000 86 1200 48 1380 12 1440 34V80H0Z') =>
   `<svg class="wave ${cls}" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="${d}"/></svg>`;
@@ -79,8 +80,8 @@ app.innerHTML = `
         <div class="monitor-body">
           <div class="monitor-top"><span><i class="dot dot-amber"></i>${NAME_UP}</span><span>ON<i class="dot dot-amber"></i></span></div>
           <div class="monitor-screen">
-            <video id="hero-video" muted loop playsinline preload="auto" poster="/media/hero-poster.jpg" aria-label="Portrait of ${FULL_NAME}">
-              <source src="/media/hero-loop.webm" type="video/webm" /><source src="/media/hero-loop.mp4" type="video/mp4" />
+            <video id="hero-video" muted loop playsinline preload="auto" poster="${BASE}media/hero-poster.jpg" aria-label="Portrait of ${FULL_NAME}">
+              <source src="${BASE}media/hero-loop.webm" type="video/webm" /><source src="${BASE}media/hero-loop.mp4" type="video/mp4" />
             </video>
             <div class="screen-glare"></div><div class="screen-scan"></div>
           </div>
@@ -101,7 +102,7 @@ app.innerHTML = `
         <div class="lanyard" id="lanyard" tabindex="0" aria-label="Draggable ID card">
           <div class="strap"></div>
           <div class="clip"></div>
-          <div class="id-card"><img src="/media/portrait-card.jpg" alt="Portrait of ${FULL_NAME}" draggable="false" width="688" height="860" /></div>
+          <div class="id-card"><img src="${BASE}media/portrait-card.jpg" alt="Portrait of ${FULL_NAME}" draggable="false" width="688" height="860" /></div>
         </div>
       </div>
       <div class="about-copy reveal">
