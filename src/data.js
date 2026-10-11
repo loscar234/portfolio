@@ -48,7 +48,7 @@ export const projects = [
   {
     num: '01', label: 'Fintech · Transport', title: 'Integrated Matatu Payment', status: 'In progress',
     description: 'A proposed digital fare-collection system for Kenya’s public transport sector, designed around clearer payment tracking, transaction visibility and reconciliation.',
-    tech: ['Next.js', 'NestJS', 'Flutter', 'PostgreSQL', 'Daraja API'], href: '', cta: 'Case study soon',
+    tech: ['Next.js', 'NestJS', 'Flutter', 'PostgreSQL', 'Daraja API'], href: '', cta: 'Case study soon', image: 'media/imp-project.png',
   },
   {
     num: '02', label: 'Academic · Desktop', title: 'Student Management System', status: 'Academic project',

@@ -155,7 +155,7 @@ app.innerHTML = `
       <div class="project-grid">
         ${projects.map((p, i) => `
         <article class="project-card reveal" style="--d:${i * 120}ms">
-          <div class="project-media">${p.image ? `<img src="${BASE}${p.image}" alt="${p.title} desktop preview" loading="lazy" decoding="async" width="1024" height="684" />` : projectVisuals[i]()}<span class="project-label">${p.label}</span><span class="project-num">${p.num}</span></div>
+          <div class="project-media">${p.image ? `<img src="${BASE}${p.image}" alt="${p.title} preview" loading="lazy" decoding="async" width="1024" height="704" />` : projectVisuals[i]()}<span class="project-label">${p.label}</span><span class="project-num">${p.num}</span></div>
           <div class="project-body">
             <div class="project-status"><i></i>${p.status}</div>
             <h3>${p.title}</h3>
