@@ -164,15 +164,15 @@ app.innerHTML = `
       <div class="project-grid">
         ${projects.map((p, i) => `
         <article class="project-card reveal" style="--d:${i * 120}ms">
-          <div class="project-media">${p.image ? `<img src="${BASE}${p.image}" alt="${p.title} preview" loading="lazy" decoding="async" width="1024" height="704" />` : projectVisuals[i]()}<span class="project-label">${p.label}</span><span class="project-num">${p.num}</span></div>
+          <div class="project-media">${p.image ? `<img src="${BASE}${p.image}" alt="${p.title} preview" loading="lazy" decoding="async" width="1024" height="704" />` : (projectVisuals[i] ? projectVisuals[i]() : '')}<span class="project-label">${p.label}</span><span class="project-num">${p.num}</span></div>
           <div class="project-body">
             <div class="project-status"><i></i>${p.status}</div>
             <h3>${p.title}</h3>
             <p>${p.description}</p>
             <div class="project-tags">${p.tech.map((t) => `<span>${t}</span>`).join('')}</div>
             <div class="project-actions">
-              ${p.href
-    ? `<a class="pill pill-dark pill-sm" href="${p.href}" target="_blank" rel="noreferrer">${githubIcon(14)} ${p.cta}</a><a class="pill pill-ghost pill-sm" href="${p.href}" target="_blank" rel="noreferrer">Source ${icon('external', 13)}</a>`
+              ${p.href || p.live
+    ? `${p.live ? `<a class="pill pill-dark pill-sm" href="${p.live}" target="_blank" rel="noreferrer">${icon('external', 13)} ${p.cta || 'Live Demo'}</a>` : `<a class="pill pill-dark pill-sm" href="${p.href}" target="_blank" rel="noreferrer">${githubIcon(14)} ${p.cta}</a>`}${p.href ? `<a class="pill pill-ghost pill-sm" href="${p.href}" target="_blank" rel="noreferrer">${githubIcon(13)} Source</a>` : ''}`
     : `<span class="pill pill-dark pill-sm is-disabled">${p.cta}</span><a class="pill pill-ghost pill-sm" href="#contact">Ask me about it ${icon('arrowUpRight', 13)}</a>`}
             </div>
           </div>

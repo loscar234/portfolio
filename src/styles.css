@@ -247,7 +247,7 @@ body.ready .screen-scan { animation: scan 6.5s 3.2s linear infinite; }
 
 /* ============================ PROJECTS ============================ */
 .projects { position: relative; background: #f4f2ee; padding: 110px 0 100px; }
-.project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; }
+.project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; align-items: stretch; }
 .project-card { display: flex; flex-direction: column; height: 100%; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 24px 44px -26px rgba(12, 17, 34, .4), 0 1px 3px rgba(12, 17, 34, .06); transition: transform .5s var(--ease), box-shadow .5s var(--ease), opacity .9s var(--ease), filter .9s var(--ease); }
 .project-card.in:hover { transform: translateY(-10px); box-shadow: 0 40px 60px -28px rgba(12, 17, 34, .48); transition-delay: 0ms; }
 .project-media { position: relative; aspect-ratio: 16 / 11; overflow: hidden; background: #e9e5de; }

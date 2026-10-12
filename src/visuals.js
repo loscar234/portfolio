@@ -98,4 +98,4 @@ export const visualKali = () => `
   </g>
 </svg>`;
 
-export const projectVisuals = [visualMatatu, visualStudent, visualKali];
+export const projectVisuals = [visualMatatu, visualStudent, visualKali, visualMatatu];

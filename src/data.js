@@ -62,9 +62,14 @@ export const projects = [
     description: 'A modular, menu-driven Bash toolkit for practical Linux administration tasks including files, permissions, processes, diagnostics and logging.',
     tech: ['Bash', 'Linux', 'Kali', 'Shell utilities'], href: 'https://github.com/loscar234/Kali-toolkit', cta: 'View Repository',
   },
+  {
+    num: '04', label: 'Web · Interactive Systems', title: 'Developer Portfolio & CRT Showcase', status: 'Live on GitHub Pages',
+    description: 'An editorial personal portfolio featuring an interactive retro CRT monitor with voiceover narration, physics-driven lanyard ID card, and automated CI/CD deployment.',
+    tech: ['HTML5', 'CSS3', 'JavaScript', 'Vite', 'GitHub Actions', 'Web3Forms'], href: 'https://github.com/loscar234/portfolio', live: 'https://loscar234.github.io/portfolio/', cta: 'Live Demo', image: 'media/portfolio-project.png',
+  },
 ];
 
-export const lab = ['Personal portfolio', 'OKOA SEM', 'React certificate generator'];
+export const lab = ['OKOA SEM', 'React certificate generator', 'Traffic Flow Simulator'];
 
 export const experience = [
   {
